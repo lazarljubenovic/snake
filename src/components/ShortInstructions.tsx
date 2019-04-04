@@ -6,7 +6,11 @@ interface Props {
 const ShortInstructions: React.FunctionComponent<Props> = (props) => {
   return (
     <div className="short-instructions">
-      <p>Arrow keys or WASD to move around. Collect as many dots as you can.</p>
+      <p>
+        Arrow keys or WASD to move around.
+        <br/>
+        Collect as many dots as you can.
+      </p>
     </div>
   )
 }

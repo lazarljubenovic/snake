@@ -1,7 +1,7 @@
 enum ActionType {
-  changeDirection = 'changeDirection',
-  advance = 'advance',
-  restart = 'restart',
+  changeDirection = 'game/changeDirection',
+  advance = 'game/advance',
+  start = 'game/start',
 }
 
 export default ActionType

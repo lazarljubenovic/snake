@@ -1,12 +1,13 @@
 import createAction from '../../utils/create-action'
-import * as core from '../../core'
 import ActionType from './action-type'
 
+import * as core from '../../core'
+
 export const changeDirection = (direction: core.Coord) =>
-  createAction(ActionType.changeDirection, direction)
+  createAction(ActionType.changeDirection, { direction })
 
 export const advance = () =>
   createAction(ActionType.advance)
 
-export const restart = () => 
-  createAction(ActionType.restart)
+export const start = (size: number) =>
+  createAction(ActionType.start, { width: size, height: size })

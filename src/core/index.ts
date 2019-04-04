@@ -69,7 +69,8 @@ export function advance(game: Game): Game {
     nextHead,
   ]
 
-  if (!isLegal(nextHead, game.width, game.height)) {
+  const { width, height } = game
+  if (!isLegal(nextHead, width, height)) {
     return {
       ...game,
       isGameOver: true,
@@ -112,10 +113,12 @@ export enum FieldType {
 }
 
 export function getMatrix(game: Game): FieldType[][] {
+  const { width, height } = game
+
   // build empty matrix, fill with "false" values
-  const matrix = new Array(game.height)
+  const matrix = new Array(height)
   for (let i = 0; i < matrix.length; i++) {
-    matrix[i] = new Array(game.width).fill(FieldType.Empty)
+    matrix[i] = new Array(width).fill(FieldType.Empty)
   }
 
   for (const coord of game.snake) {

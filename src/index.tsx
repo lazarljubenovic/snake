@@ -5,12 +5,15 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 
 import { Provider } from 'react-redux'
-import store from './store'
+import store, { rrfProps } from './store'
+import { ReactReduxFirebaseProvider } from 'react-redux-firebase'
 
 const rootElement = document.getElementById('root') as HTMLElement
 const app = (
   <Provider store={store}>
-    <App />
+    <ReactReduxFirebaseProvider {...rrfProps}>
+      <App />
+    </ReactReduxFirebaseProvider>
   </Provider>
 )
 

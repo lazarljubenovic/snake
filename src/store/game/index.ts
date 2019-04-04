@@ -2,25 +2,24 @@ import { Reducer } from 'redux'
 import * as core from '../../core'
 import ActionType from './action-type'
 import * as actions from './actions'
+import { State } from './state'
 type Action = GetActions<typeof import('./actions')>
 
-export type State = core.Game
-
-const BOARD_SIZE = 21
-const initialState: State = core.create(BOARD_SIZE, BOARD_SIZE)
+const initialState: State = core.create(15, 15)
 
 const reducer: Reducer<State, Action> = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.changeDirection:
-      return core.changeDirection(state, action.payload)
+      return core.changeDirection(state, action.payload.direction)
     case ActionType.advance:
       return core.advance(state)
-    case ActionType.restart:
-      return initialState
+    case ActionType.start:
+      return core.create(action.payload.width, action.payload.height)
     default:
       return state
   }
 }
 
 export default reducer
+export type State = State
 export { actions }

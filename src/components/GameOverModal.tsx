@@ -2,7 +2,8 @@ import * as React from 'react'
 
 interface Props {
   score: number
-  onAgain: () => void
+  again: () => void
+  back: () => void
 }
 
 class GameOverModal extends React.Component<Props>  {
@@ -14,18 +15,18 @@ class GameOverModal extends React.Component<Props>  {
   }
 
   public componentDidMount() {
-    console.log('did mount')
     this.focusButton()
   }
 
   public render() {
-    const { score, onAgain } = this.props
+    const { score, again, back } = this.props
     return (
       <div className="modal-wrapper">
         <div className="modal game-over-modal">
           <p>Game over!</p>
           <p>Score: {score}</p>
-          <button ref={this.buttonRef} onClick={onAgain}>Again?</button>
+          <button ref={this.buttonRef} onClick={again}>Again?</button>
+          <button onClick={back}>Main menu</button>
         </div>
       </div>
     )
