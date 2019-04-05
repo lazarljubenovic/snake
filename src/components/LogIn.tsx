@@ -28,15 +28,7 @@ class LogIn extends React.Component<Props, State> {
     const result = await this.props.firebase.login({
       provider: 'facebook',
       type: 'popup',
-    } as any)
-    this.props.goToMainMenu()
-  }
-
-  @bind private async twitter() {
-    const result = await this.props.firebase.login({
-      provider: 'twitter',
-      type: 'popup',
-    } as any)
+    })
     this.props.goToMainMenu()
   }
 
@@ -44,15 +36,7 @@ class LogIn extends React.Component<Props, State> {
     const result = await this.props.firebase.login({
       provider: 'google',
       type: 'popup',
-    } as any)
-    this.props.goToMainMenu()
-  }
-
-  @bind private async github() {
-    const result = await this.props.firebase.login({
-      provider: 'github',
-      type: 'popup',
-    } as any)
+    })
     this.props.goToMainMenu()
   }
 
@@ -63,9 +47,7 @@ class LogIn extends React.Component<Props, State> {
 
         <div className="options">
           <button onClick={this.facebook}>Facebook</button>
-          {/* <button onClick={this.twitter}>Twitter</button> */}
           <button onClick={this.google}>Google</button>
-          {/* <button onClick={this.github}>GitHub</button> */}
         </div>
 
         <div className="actions">
