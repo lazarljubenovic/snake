@@ -230,13 +230,34 @@ body {
     }
   }
 
+  .title {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 3rem;
+
+    .options {
+      display: flex;
+
+      > * + * {
+        margin-left: 3rem;
+      }
+
+      > * {
+        display: flex;
+
+        > * + * {
+          margin-left: 1rem;
+        }
+      }
+    }
+  }
+
   .main {
     border-left: calc(var(--base) / 8) solid var(--color-background);
     width: 100%;
   }
 
   table {
-    margin-top: 2rem;
     width: 100%;
     text-align: left;
     padding: 0;
