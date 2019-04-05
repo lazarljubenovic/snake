@@ -17,9 +17,10 @@ export interface StateProps {
 }
 
 export interface DispatchProps {
-  clickPlay: (size: number) => void
-  clickHighScores: () => void
-  clickInstructions: () => void
+  startGameFromMainMenu: (size: number) => void
+  goToHighScoresScreen: () => void
+  goToInstructionsScreen: () => void
+  goToLogInScreen: () => void
 
   changeSpeed: (speed: number) => void
   changeSize: (size: number) => void
@@ -41,18 +42,13 @@ export class MainMenu extends React.Component<Props> {
   }
 
   @bind private play() {
-    this.props.clickPlay(this.props.size)
+    this.props.startGameFromMainMenu(this.props.size)
   }
 
   @bind private async loginLogoutButtonClick() {
     if (!this.props.profile.isLoaded) return
     if (this.props.profile.isEmpty) {
-      // log in
-      // @todo: what's wrong with types?
-      this.props.firebase.login({
-        provider: 'google',
-        type: 'popup',
-      } as any)
+      this.props.goToLogInScreen()
     } else {
       this.props.firebase.logout()
     }
@@ -108,8 +104,8 @@ export class MainMenu extends React.Component<Props> {
         </div>
 
         <div className="area horizontal">
-          <button onClick={this.props.clickHighScores}>High scores</button>
-          <button onClick={this.props.clickInstructions}>Instructions</button>
+          <button onClick={this.props.goToHighScoresScreen}>High scores</button>
+          <button onClick={this.props.goToInstructionsScreen}>Instructions</button>
         </div>
 
         <div className="area">
@@ -140,15 +136,18 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (sta
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatch, ownProps) => {
   return {
-    clickPlay: (size: number) => {
+    startGameFromMainMenu: (size: number) => {
       dispatch(store.game.actions.start(size))
       dispatch(store.ui.actions.changeScreen(Screen.Game))
     },
-    clickHighScores: () => {
+    goToHighScoresScreen: () => {
       dispatch(store.ui.actions.changeScreen(Screen.HighScores))
     },
-    clickInstructions: () => {
+    goToInstructionsScreen: () => {
       dispatch(store.ui.actions.changeScreen(Screen.Instructions))
+    },
+    goToLogInScreen: () => {
+      dispatch(store.ui.actions.changeScreen(Screen.LogIn))
     },
 
     changeSpeed: (speed: number) => {

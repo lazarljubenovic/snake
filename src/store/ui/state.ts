@@ -3,6 +3,7 @@ export enum Screen {
   HighScores,
   Game,
   Instructions,
+  LogIn,
 }
 
 export interface State {

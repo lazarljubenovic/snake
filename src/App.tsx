@@ -6,12 +6,14 @@ import { connect, MapStateToProps, MapDispatchToProps } from 'react-redux'
 import * as store from './store'
 import { Screen } from './store/ui/state';
 import Instructions from './components/Instructions';
+import LogIn from './components/LogIn';
 
 interface StateProps {
   isMainMenuScreen: boolean
   isGameScreen: boolean
   isHighScoresScreen: boolean
   isInstructionsScreen: boolean
+  isLogInScreen: boolean
 }
 
 interface DispatchProps {
@@ -32,6 +34,7 @@ class App extends React.Component<Props> {
         {this.props.isGameScreen && <Game />}
         {this.props.isHighScoresScreen && <HighScores />}
         {this.props.isInstructionsScreen && <Instructions />}
+        {this.props.isLogInScreen && <LogIn />}
       </div>
     )
   }
@@ -43,6 +46,7 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (sta
     isGameScreen: state.ui.currentScreen == Screen.Game,
     isHighScoresScreen: state.ui.currentScreen == Screen.HighScores,
     isInstructionsScreen: state.ui.currentScreen == Screen.Instructions,
+    isLogInScreen: state.ui.currentScreen == Screen.LogIn,
   }
 }
 
