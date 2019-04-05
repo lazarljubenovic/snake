@@ -10,7 +10,7 @@ const initialState: State = core.create(15, 15)
 const reducer: Reducer<State, Action> = (state = initialState, action) => {
   switch (action.type) {
     case ActionType.changeDirection:
-      return core.changeDirection(state, action.payload.direction)
+      return core.addInstruction(state, action.payload.direction)
     case ActionType.advance:
       return core.advance(state)
     case ActionType.start:

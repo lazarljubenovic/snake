@@ -8,7 +8,7 @@ interface RtdbGameScore {
   score: number
   size: number
   speed: number
-  user: RtdbUid<RtdbUser>
+  user: string // uid
   userDisplayName: string
 }
 

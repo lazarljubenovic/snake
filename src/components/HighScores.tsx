@@ -4,12 +4,12 @@ import * as store from '../store'
 import { Screen } from '../store/ui/state'
 import bind from 'bind-decorator'
 import { compose } from 'redux'
-import { firebaseConnect, WithFirebaseProps, FirebaseKvPairs, RtdbUid } from 'react-redux-firebase'
+import { firebaseConnect, WithFirebaseProps, KvPairs } from 'react-redux-firebase'
 import Counter from './Counter';
 import { formatTwoDigits } from './MainMenu';
 
 interface StateProps {
-  scores: FirebaseKvPairs<RtdbGameScore> | undefined
+  scores: KvPairs<RtdbGameScore> | undefined
 }
 
 interface DispatchProps {
@@ -41,7 +41,7 @@ class HighScores extends React.Component<Props, State> {
     size: 15,
   }
 
-  private get scores(): (RtdbGameScore & { key: RtdbUid<RtdbGameScore> })[] | null {
+  private get scores(): (RtdbGameScore & { key: string })[] | null {
     const { scores } = this.props
     if (scores == null) return null
 

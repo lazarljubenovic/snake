@@ -9,7 +9,7 @@ import GameOverModal from './GameOverModal'
 import ScoreBar from './ScoreBar';
 import ShortInstructions from './ShortInstructions';
 import { Screen } from '../store/ui/state';
-import { withFirebase, WithFirebaseProps, RtdbUid } from 'react-redux-firebase'
+import { withFirebase, WithFirebaseProps } from 'react-redux-firebase'
 // import { FirebaseProfile } from '../store/state'
 
 export interface StateProps {
@@ -18,7 +18,7 @@ export interface StateProps {
   matrix: core.FieldType[][]
   isGameOver: boolean
   profile: any // FirebaseProfile
-  auth: { uid: RtdbUid<RtdbUser>, displayName: string }
+  auth: { uid: string, displayName: string }
 }
 
 export interface DispatchProps {

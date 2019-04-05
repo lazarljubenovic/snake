@@ -29,6 +29,7 @@ export interface Game {
   snake: Snake
   dot: Coord
   direction: Coord
+  instructionQueue: Coord[]
   isGameOver: boolean
 }
 
@@ -49,6 +50,7 @@ export function create(width: number, height: number): Game {
     snake,
     dot: [-1, -1],
     direction: DIRECTION.RIGHT, // change to LEFT to make the snake rest
+    instructionQueue: [],
     isGameOver: false,
   }
 
@@ -61,48 +63,77 @@ export function create(width: number, height: number): Game {
 }
 
 export function advance(game: Game): Game {
-  const snakeHead = game.snake[game.snake.length - 1]
-  const nextHead = add(snakeHead, game.direction)
+  const direction: Coord = (game.instructionQueue.length == 0)
+    ? game.direction
+    : game.instructionQueue.shift()!
 
+  const snakeHead = game.snake[game.snake.length - 1]
+  const nextHead = add(snakeHead, direction)
+  const { width, height } = game
+
+  // If the snake runs into the wall, bye-bye snake.
+  // If the snake attempts cannibalism, bye-bye snake.
+  const isRunningIntoWall = !isLegal(nextHead, width, height)
+  const isEatingItself = game.snake.some(coord => eq(coord, nextHead))
+  if (isRunningIntoWall || isEatingItself) {
+    return {
+      ...game,
+      direction,
+      isGameOver: true,
+    }
+  }
+
+  // The snake is good to go, so we extend its head.
+  // We'll see if we should remove its tail or not based on if
+  // the snake is eating.
   const snake = [
     ...game.snake,
     nextHead,
   ]
 
-  const { width, height } = game
-  if (!isLegal(nextHead, width, height)) {
-    return {
-      ...game,
-      isGameOver: true,
-    }
-  }
-
+  // If the snake isn't eating, so we remove one coord from the tail.
   if (!eq(game.dot, nextHead)) {
     snake.splice(0, 1)
     return {
       ...game,
       snake,
+      direction,
     }
   }
 
-
+  // The snake has eaten the dot, so we create a new one.
   const dot = getRandomFreeCoord(game)
   return {
     ...game,
     snake,
     dot,
+    direction,
   }
 }
 
-export function changeDirection(game: Game, direction: Coord): Game {
-  const currDir = game.direction
-  if (currDir == DIRECTION.LEFT && direction == DIRECTION.RIGHT) return game
-  if (currDir == DIRECTION.RIGHT && direction == DIRECTION.LEFT) return game
-  if (currDir == DIRECTION.UP && direction == DIRECTION.DOWN) return game
-  if (currDir == DIRECTION.DOWN && direction == DIRECTION.UP) return game
+export function addInstruction(game: Game, instruction: Coord): Game {
+  const latestInstruction = game.instructionQueue.length == 0
+    ? game.direction
+    : game.instructionQueue[game.instructionQueue.length - 1]
+
+  // If the instruction overlaps with the latest instruction, ignore it.
+  if (eq(latestInstruction, instruction)) return game
+
+  // If the instruction is direct oposite of the latest instruction, ignore it.
+  if (latestInstruction == DIRECTION.LEFT && instruction == DIRECTION.RIGHT) return game
+  if (latestInstruction == DIRECTION.RIGHT && instruction == DIRECTION.LEFT) return game
+  if (latestInstruction == DIRECTION.UP && instruction == DIRECTION.DOWN) return game
+  if (latestInstruction == DIRECTION.DOWN && instruction == DIRECTION.UP) return game
+
+  // Otherwise, the instruction is accepted and added to the queue.
+  const instructionQueue = [
+    ...game.instructionQueue,
+    instruction,
+  ]
+
   return {
     ...game,
-    direction,
+    instructionQueue,
   }
 }
 
