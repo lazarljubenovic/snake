@@ -165,7 +165,7 @@ class HighScores extends React.Component<Props, State> {
 
 }
 
-const firebaseConnected = firebaseConnect<RtdbSchema>(() => [
+const firebaseConnected = firebaseConnect([
   { path: 'gameScores', queryParams: ['orderByChild=score'] },
 ])
 

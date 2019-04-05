@@ -7,6 +7,7 @@ import bind from 'bind-decorator'
 import { firebaseConnect } from 'react-redux-firebase'
 import { withFirebase, WithFirebaseProps } from 'react-redux-firebase'
 import { compose } from 'redux'
+import { timingSafeEqual } from 'crypto';
 // import { FirebaseProfile } from '../store/state';
 
 export interface StateProps {
@@ -18,6 +19,7 @@ export interface StateProps {
 export interface DispatchProps {
   clickPlay: (size: number) => void
   clickHighScores: () => void
+  clickInstructions: () => void
 
   changeSpeed: (speed: number) => void
   changeSize: (size: number) => void
@@ -90,6 +92,7 @@ export class MainMenu extends React.Component<Props> {
 
     return (
       <div className="main-menu">
+
         <div className="area">
           <button onClick={this.play}>Play</button>
           <div className="settings">
@@ -104,8 +107,9 @@ export class MainMenu extends React.Component<Props> {
           </div>
         </div>
 
-        <div className="area">
+        <div className="area horizontal">
           <button onClick={this.props.clickHighScores}>High scores</button>
+          <button onClick={this.props.clickInstructions}>Instructions</button>
         </div>
 
         <div className="area">
@@ -113,12 +117,13 @@ export class MainMenu extends React.Component<Props> {
             disabled={!this.props.profile.isLoaded}
             onClick={this.loginLogoutButtonClick}
           >
-            { loginButtonText }
+            {loginButtonText}
           </button>
           <span className={loggedInAsClassNames.join(' ')}>
-            Logged in as { username }
+            Logged in as {username}
           </span>
         </div>
+
       </div >
     )
   }
@@ -141,6 +146,9 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatc
     },
     clickHighScores: () => {
       dispatch(store.ui.actions.changeScreen(Screen.HighScores))
+    },
+    clickInstructions: () => {
+      dispatch(store.ui.actions.changeScreen(Screen.Instructions))
     },
 
     changeSpeed: (speed: number) => {

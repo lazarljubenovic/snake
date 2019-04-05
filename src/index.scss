@@ -30,6 +30,7 @@
 
 html {
   font-size: calc(var(--base) * 2 / 3);
+  line-height: 1.5;
 }
 
 body {
@@ -39,6 +40,10 @@ body {
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
   background: var(--color-background);
+}
+
+a {
+  text-decoration-style: dashed;
 }
 
 #root {
@@ -74,11 +79,26 @@ body {
 
   .area {
     width: 100%;
-    display: flex;
-    flex-direction: column;
 
-    > * + * {
-      margin-top: calc(var(--base) * 2 / 3);
+    &:not(.horizontal) {
+      display: flex;
+      flex-direction: column;
+
+      > * + * {
+        margin-top: calc(var(--base) * 2 / 3);
+      }
+    }
+
+    &.horizontal {
+      display: flex;
+
+      > * { 
+        width: 100%;
+      }
+      
+      > * + * {
+        margin-left: 2rem;
+      }
     }
   }
 
@@ -208,8 +228,6 @@ body {
   width: 80vw;
   color: var(--color-background);
   background-color: var(--color-foreground);
-  // border: calc(var(--base) / 8) solid var(--color-background);
-  // box-shadow: calc(var(--base) / 2) calc(var(--base) / 2) 0 0 var(--color-background);
   border: var(--board-cell-gap) solid var(--color-background);
   box-shadow: 0 0 0 calc(var(--base) / 6) var(--color-foreground);
 
@@ -265,6 +283,44 @@ body {
 
     th {
       padding-bottom: 1rem;
+    }
+  }
+}
+
+.instructions {
+  display: flex;
+  height: 80vh;
+  width: 80vw;
+  color: var(--color-background);
+  background-color: var(--color-foreground);
+  border: var(--board-cell-gap) solid var(--color-background);
+  box-shadow: 0 0 0 calc(var(--base) / 6) var(--color-foreground);
+  padding: 2rem;
+
+  flex-direction: column;
+
+  .panels {
+    flex: 1;
+    display: grid;
+    grid-template-rows: auto auto;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+
+    h2 {
+      font-size: 1.5rem;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+
+  .actions {
+    width: 100%;
+
+    button {
+      width: 100%;
     }
   }
 }
