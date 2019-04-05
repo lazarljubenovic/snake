@@ -8,8 +8,10 @@ const ShortInstructions: React.FunctionComponent<Props> = (props) => {
     <div className="short-instructions">
       <p>
         Arrow keys or WASD to move around.
+        Swipe on touch screens.
         <br/>
         Collect as many dots as you can.
+        Don't die.
       </p>
     </div>
   )

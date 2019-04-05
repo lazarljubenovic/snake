@@ -49,7 +49,7 @@ export function create(width: number, height: number): Game {
     height,
     snake,
     dot: [-1, -1],
-    direction: DIRECTION.RIGHT, // change to LEFT to make the snake rest
+    direction: DIRECTION.RIGHT,
     instructionQueue: [],
     isGameOver: false,
   }
@@ -66,6 +66,11 @@ export function advance(game: Game): Game {
   const direction: Coord = (game.instructionQueue.length == 0)
     ? game.direction
     : game.instructionQueue.shift()!
+
+  // I often set initial direction as [0, 0] while debugging.
+  // The snake technically runs over itself at the same position
+  // at the next tick, so I ignore that issue here.
+  if (eq(direction, [0, 0])) return game
 
   const snakeHead = game.snake[game.snake.length - 1]
   const nextHead = add(snakeHead, direction)

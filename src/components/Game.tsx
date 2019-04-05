@@ -100,11 +100,13 @@ class Game extends React.Component<Props> {
     const ms = ((9 - this.props.speed) * 450 / 8) + 50
     this.interval = setInterval(this.props.advance, ms)
     document.addEventListener('keydown', this.onKeyDown)
+    this.setUpSwipeDetection()
   }
 
   private endGameLoop() {
     clearInterval(this.interval)
     document.removeEventListener('keydown', this.onKeyDown)
+    this.stripDownSwipeDetection()
   }
 
   private saveScore () {
@@ -182,6 +184,70 @@ class Game extends React.Component<Props> {
   private pressDown = () => this.props.changeDirection(core.DIRECTION.DOWN)
   private pressLeft = () => this.props.changeDirection(core.DIRECTION.LEFT)
   private pressRight = () => this.props.changeDirection(core.DIRECTION.RIGHT)
+
+  private setUpSwipeDetection () {
+    document.addEventListener('touchstart', this.handleTouchStart, false)
+    document.addEventListener('touchmove', this.handleTouchMove, false)
+    document.addEventListener('touchend', this.handleTouchEnd, false)
+  }
+
+  private stripDownSwipeDetection () {
+    document.removeEventListener('touchstart', this.handleTouchStart)
+    document.removeEventListener('touchmove', this.handleTouchMove)
+    document.removeEventListener('touchend', this.handleTouchEnd)
+  }
+
+  private swipeXPrev: number = 0
+  private swipeYPrev: number = 0
+
+  private swipeXSpeed: number = 0
+  private swipeYSpeed: number = 0
+
+  private handleTouchStart = (event: TouchEvent) => {
+    event.preventDefault()
+    const touch = event.touches.item(0)
+    if (touch == null) return
+    this.swipeXPrev = touch.pageX
+    this.swipeYPrev = touch.pageY
+  }
+
+  private handleTouchMove = (event: TouchEvent) => {
+    event.preventDefault()
+    const touch = event.touches.item(0)
+    if (touch == null) return
+
+    this.swipeXSpeed = touch.pageX - this.swipeXPrev
+    this.swipeYSpeed = touch.pageY - this.swipeYPrev
+
+    this.swipeXPrev = touch.pageX
+    this.swipeYPrev = touch.pageY
+  }
+
+  private handleTouchEnd = (event: TouchEvent) => {
+    event.preventDefault()
+    console.log(this.swipeXSpeed, this.swipeYSpeed)
+    
+    const swipeThreshold = 10
+    if (Math.abs(this.swipeXSpeed) >= swipeThreshold || Math.abs(this.swipeYPrev) >= swipeThreshold) {
+      if (Math.abs(this.swipeXSpeed) > Math.abs(this.swipeYSpeed)) {
+        // x is dominant
+        if (this.swipeXSpeed < 0) {
+          this.pressLeft()
+        } else {
+          this.pressRight()
+        }
+      } else {
+        // y is dominant
+        if (this.swipeYSpeed < 0) {
+          this.pressUp()
+        } else {
+          this.pressDown()
+        }
+      }
+    }
+
+    this.swipeXPrev = this.swipeYPrev = this.swipeXSpeed = this.swipeYSpeed = 0
+  }
 
 }
 
