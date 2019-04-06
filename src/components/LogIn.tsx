@@ -7,6 +7,7 @@ import LogInDumb from './LogIn.dumb'
 import ScreenCmp from './Screen'
 
 interface StateProps {
+  profile: RtdbProfile
 }
 
 interface DispatchProps {
@@ -29,6 +30,7 @@ class LogIn extends React.Component<Props, State> {
     return (
       <ScreenCmp className="log-in">
         <LogInDumb
+          isLoading={!this.props.profile.isLoaded}
           onFacebook={this.props.onFacebook}
           onGoogle={this.props.onGoogle}
           onBack={this.props.back}
@@ -39,8 +41,10 @@ class LogIn extends React.Component<Props, State> {
 
 }
 
-const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (state, ownProps) => {
+// @todo type
+const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (state: any, ownProps) => {
   return {
+    profile: state.firebase.profile,
   }
 }
 

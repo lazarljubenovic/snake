@@ -464,3 +464,27 @@ button.basic {
     width: 100%;
   }
 }
+
+.full-screen-loading {
+  position: fixed;
+  top: 0;
+  left: 0;
+  margin: 0!important;
+  width: 100%;
+  height: calc(100 * var(--vh));
+  background-color: rgba(black, .8);
+  color: var(--color-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+
+  > * {
+    display: block;
+  }
+
+  > * + * {
+    margin-top: 1rem;
+  }
+}

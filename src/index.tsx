@@ -17,9 +17,6 @@ const app = (
   </Provider>
 )
 
-console.log(app)
-console.log(rootElement)
-
 ReactDOM.render(app, rootElement)
 
 // If you want your app to work offline and load faster, you can change

@@ -161,6 +161,7 @@ export class MainMenu extends React.Component<Props, State> {
 
 }
 
+// @todo type
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (state: any, ownProps) => {
   return {
     speed: state.options.speed,
