@@ -26,7 +26,7 @@ export default class FullScreenLoading extends React.Component<Props, State> {
   }
 
   @bind private next() {
-    const index = (this.state.index + 1) % 6
+    const index = (this.state.index + 1) % 3
     this.setState({ index })
   }
 
