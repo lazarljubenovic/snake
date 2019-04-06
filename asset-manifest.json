@@ -1,5 +1,5 @@
 {
-  "main.css": "/snake/static/css/main.239123d0.chunk.css",
+  "main.css": "/snake/static/css/main.7014cc76.chunk.css",
   "main.js": "/snake/static/js/main.415fd3b1.chunk.js",
   "main.js.map": "/snake/static/js/main.415fd3b1.chunk.js.map",
   "runtime~main.js": "/snake/static/js/runtime~main.ccc81976.js",
@@ -7,7 +7,8 @@
   "static/js/2.eb8bd00b.chunk.js": "/snake/static/js/2.eb8bd00b.chunk.js",
   "static/js/2.eb8bd00b.chunk.js.map": "/snake/static/js/2.eb8bd00b.chunk.js.map",
   "index.html": "/snake/index.html",
-  "precache-manifest.393e843b5d5c59748bd0966e0e6e5285.js": "/snake/precache-manifest.393e843b5d5c59748bd0966e0e6e5285.js",
+  "precache-manifest.0a5c3580b4ecc5e04008d5cf1742c147.js": "/snake/precache-manifest.0a5c3580b4ecc5e04008d5cf1742c147.js",
   "service-worker.js": "/snake/service-worker.js",
-  "static/css/main.239123d0.chunk.css.map": "/snake/static/css/main.239123d0.chunk.css.map"
+  "static/css/main.7014cc76.chunk.css.map": "/snake/static/css/main.7014cc76.chunk.css.map",
+  "static/media/index.scss": "/snake/static/media/PressStart2P.74496d90.ttf"
 }
