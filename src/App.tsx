@@ -8,6 +8,8 @@ import { Screen } from './store/ui/state'
 import Instructions from './components/Instructions'
 import LogIn from './components/LogIn'
 import bind from 'bind-decorator'
+import { firebaseConnect, WithFirebaseProps } from 'react-redux-firebase';
+import { compose } from 'redux';
 
 function getLastNotGreaterThan(n: number, ns: number[]): number {
   if (n <= ns[0]) return ns[0]
@@ -28,14 +30,14 @@ interface StateProps {
 }
 
 interface DispatchProps {
-
+  goToMainMenu: () => void
 }
 
 interface OwnProps {
 
 }
 
-type Props = StateProps & DispatchProps & OwnProps
+type Props = StateProps & DispatchProps & OwnProps & WithFirebaseProps<any>
 
 class App extends React.Component<Props> {
 
@@ -57,13 +59,48 @@ class App extends React.Component<Props> {
   public render() {
     return (
       <div>
-        {this.props.isMainMenuScreen && <MainMenu />}
-        {this.props.isGameScreen && <Game />}
-        {this.props.isHighScoresScreen && <HighScores />}
-        {this.props.isInstructionsScreen && <Instructions />}
-        {this.props.isLogInScreen && <LogIn />}
+        {
+          this.props.isMainMenuScreen &&
+          <MainMenu />
+        }
+        {
+          this.props.isGameScreen &&
+          <Game
+            facebook={this.facebook}
+            google={this.google}
+          />
+        }
+        {
+          this.props.isHighScoresScreen &&
+          <HighScores />
+        }
+        {
+          this.props.isInstructionsScreen &&
+          <Instructions />
+        }
+        {
+          this.props.isLogInScreen &&
+          <LogIn
+            onFacebook={this.facebook}
+            onGoogle={this.google}
+          />
+        }
       </div>
     )
+  }
+
+  @bind private async facebook() {
+    await this.props.firebase.login({
+      provider: 'facebook',
+      type: 'popup',
+    })
+  }
+
+  @bind private async google() {
+    await this.props.firebase.login({
+      provider: 'google',
+      type: 'popup',
+    })
   }
 
   @bind private onResize() {
@@ -87,6 +124,8 @@ class App extends React.Component<Props> {
 
 }
 
+const firebaseConnected = firebaseConnect<OwnProps>([])
+
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (state, ownProps) => {
   return {
     isMainMenuScreen: state.ui.currentScreen == Screen.MainMenu,
@@ -101,8 +140,13 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (sta
 
 const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatch, ownProps) => {
   return {
-
+    goToMainMenu: () => {
+      dispatch(store.ui.actions.changeScreen(Screen.MainMenu))
+    }
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default compose(
+  firebaseConnected,
+  connect(mapStateToProps, mapDispatchToProps),
+)(App)

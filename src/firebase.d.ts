@@ -4,6 +4,16 @@ interface RtdbUser {
   email: string
 }
 
+type RtdbProfile = {
+  isLoaded: false
+} | {
+  isLoaded: true
+  isEmpty: true
+} | ({
+  isLoaded: true
+  isEmpty: false
+} & RtdbUser)
+
 interface RtdbGameScore {
   score: number
   size: number

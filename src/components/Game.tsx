@@ -6,9 +6,9 @@ import * as store from '../store'
 import * as core from '../core'
 
 import GameOverModal from './GameOverModal'
-import ScoreBar from './ScoreBar';
-import ShortInstructions from './ShortInstructions';
-import { Screen } from '../store/ui/state';
+import ScoreBar from './ScoreBar'
+import ShortInstructions from './ShortInstructions'
+import { Screen } from '../store/ui/state'
 import { withFirebase, WithFirebaseProps } from 'react-redux-firebase'
 // import { FirebaseProfile } from '../store/state'
 
@@ -17,7 +17,7 @@ export interface StateProps {
   speed: number
   matrix: core.FieldType[][]
   isGameOver: boolean
-  profile: any // FirebaseProfile
+  profile: RtdbProfile
   auth: { uid: string, displayName: string }
 }
 
@@ -29,7 +29,8 @@ export interface DispatchProps {
 }
 
 export interface OwnProps {
-
+  facebook: () => Promise<void>
+  google: () => Promise<void>
 }
 
 export type Props = StateProps & DispatchProps & OwnProps & WithFirebaseProps<any>
@@ -53,7 +54,6 @@ class Game extends React.Component<Props> {
     }
     if (!prevProps.isGameOver && this.props.isGameOver) {
       this.endGameLoop()
-      this.saveScore()
     }
   }
 
@@ -91,7 +91,18 @@ class Game extends React.Component<Props> {
           <div className="board">{cells}</div>
           {/* <ShortInstructions /> */}
         </div>
-        {this.props.isGameOver && <GameOverModal again={this.restart} back={this.props.toMainMenu} score={this.score} />}
+        {
+          this.props.isGameOver &&
+          <GameOverModal
+            saveScore={this.saveScore}
+            again={this.restart}
+            back={this.props.toMainMenu}
+            score={this.score}
+            profile={this.props.profile}
+            facebook={this.props.facebook}
+            google={this.props.google}
+          />
+        }
       </>
     )
   }
@@ -109,9 +120,8 @@ class Game extends React.Component<Props> {
     this.stripDownSwipeDetection()
   }
 
-  private saveScore () {
+  @bind private async saveScore () {
     if (!this.props.profile.isLoaded) {
-      console.log('shucks')
       return
     }
 
@@ -132,7 +142,7 @@ class Game extends React.Component<Props> {
       userDisplayName: userDisplayName,
     }
 
-    this.props.firebase.push('gameScores/', gameScore)
+    await this.props.firebase.push('gameScores', gameScore)
   }
 
   @bind private restart() {
@@ -266,14 +276,12 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (sta
 const mapDispatchoProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatch, ownProps) => {
   return {
     advance: () => {
-      // @todo play sound
       dispatch(store.game.actions.advance())
     },
     changeDirection: (direction: core.Coord) => {
       dispatch(store.game.actions.changeDirection(direction))
     },
     restart: (size: number) => {
-      // @todo play sound
       dispatch(store.game.actions.start(size))
     },
     toMainMenu: () => {

@@ -179,6 +179,32 @@ button.basic {
   }
 }
 
+.game-over {
+  display: flex;
+  text-align: center;
+
+  h1 {
+    font-size: 1.5em;
+  }
+
+  .score {
+    font-size: 2em;
+  }
+
+  .text {
+
+  }
+
+  .actions {
+    display: flex;
+    flex-direction: column;
+
+    > * + * {
+      margin-top: 1rem;
+    }
+  }
+}
+
 .score-bar {
   border: var(--board-cell-gap) solid var(--color-board-empty);
   color: var(--color-background);
@@ -244,11 +270,16 @@ button.basic {
 .modal {
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   background-color: var(--color-background);
   color: var(--color);
-  padding: 2.5rem;
+  padding: 1.5rem;
   border: .5rem solid var(--color-foreground);
-  box-shadow: .5rem .55rem 0 0 var(--color-foreground);
+
+  width: 30rem;
+  height: 30rem;
+  max-width: 80vw;
+  max-height: calc(80 * var(--vh));
 
   > * + * {
     margin-top: 1rem;
@@ -413,8 +444,6 @@ button.basic {
 
 .log-in {
   display: flex;
-  border: var(--board-cell-gap) solid var(--color-foreground);
-  box-shadow: 0 0 0 calc(var(--board-cell-size) / 6) var(--color-background);
   padding: 2rem;
   flex-direction: column;
   align-items: center;
@@ -425,13 +454,12 @@ button.basic {
 
   .options {
     flex: 1;
-    display: grid;
-    grid-template-rows: auto auto;
-    grid-template-columns: auto;
-    grid-gap: 1rem;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+    display: flex;
+    flex-direction: column;
+
+    > * + * {
+      margin-top: 1rem;
+    }
   }
 
   button {
