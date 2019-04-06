@@ -7,10 +7,11 @@ import bind from 'bind-decorator'
 import { firebaseConnect } from 'react-redux-firebase'
 import { withFirebase, WithFirebaseProps } from 'react-redux-firebase'
 import { compose } from 'redux'
-import { timingSafeEqual } from 'crypto';
-// import { FirebaseProfile } from '../store/state';
+import strings, { Language } from '../strings'
+// import { FirebaseProfile } from '../store/state'
 
 export interface StateProps {
+  lng: Language
   speed: number
   size: number
   profile: any // FirebaseProfile
@@ -88,11 +89,15 @@ export class MainMenu extends React.Component<Props> {
       ? this.props.profile.displayName
       : ''
 
+    const lng = this.props.lng
+
     return (
       <div className="screen main-menu">
 
         <div className="area">
-          <button onClick={this.play}>Play</button>
+          <button onClick={this.play}>
+            { strings['Play'][lng] }
+          </button>
           <div className="settings">
             <div className="setting">
               <span>Speed</span>
@@ -134,6 +139,7 @@ export class MainMenu extends React.Component<Props> {
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (state: any, ownProps) => {
   return {
+    lng: state.locale.locale,
     speed: state.options.speed,
     size: state.options.size,
     profile: state.firebase.profile,

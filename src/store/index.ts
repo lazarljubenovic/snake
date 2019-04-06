@@ -4,6 +4,7 @@ import State from './state'
 import * as game from './game'
 import * as ui from './ui'
 import * as options from './options'
+import * as locale from './locale'
 
 import firebase from 'firebase'
 import firebaseConfig from '../firebase.config'
@@ -22,6 +23,7 @@ const rootReducer = Redux.combineReducers({
   game: game.default,
   ui: ui.default,
   options: options.default,
+  locale: locale.default,
 })
 
 const store = Redux.createStore(

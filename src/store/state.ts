@@ -1,6 +1,7 @@
 import * as game from './game'
 import * as ui from './ui'
 import * as options from './options'
+import * as locale from './locale'
 import { WithFirebaseProps, FirebaseReducer } from 'react-redux-firebase'
 
 interface FirebaseProfileProviderDataGoogle {
@@ -29,6 +30,7 @@ interface _State {
   game: game.State
   ui: ui.State
   options: options.State,
+  locale: locale.State,
 }
 
 export default interface State extends _State {
