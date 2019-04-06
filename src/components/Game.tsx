@@ -237,7 +237,6 @@ class Game extends React.Component<Props> {
 
   private handleTouchEnd = (event: TouchEvent) => {
     event.preventDefault()
-    console.log(this.swipeXSpeed, this.swipeYSpeed)
     
     const swipeThreshold = 10
     if (Math.abs(this.swipeXSpeed) >= swipeThreshold || Math.abs(this.swipeYPrev) >= swipeThreshold) {
@@ -293,4 +292,4 @@ const mapDispatchoProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatch
 export default (compose(
   withFirebase,
   connect(mapStateToProps, mapDispatchoProps),
-)(Game))
+)(Game) as any)

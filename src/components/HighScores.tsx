@@ -190,7 +190,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatc
   }
 }
 
-export default compose(
+export default (compose(
   firebaseConnected,
   connect(mapStateToProps, mapDispatchToProps),
-)(HighScores)
+)(HighScores) as any)

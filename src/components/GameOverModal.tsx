@@ -66,7 +66,7 @@ class GameOverModal extends React.Component<Props, State>  {
     ]
 
     if (isNotEnoughScoreVariant) {
-      textBlock.push(<p key={'low-score'}>Score 5 or more to enter hi-score list.</p>)
+      textBlock.push(<p key={'low-score'}>Score 5 or more for hi-score.</p>)
     }
 
     if (isPleaseLoginVariant) {

@@ -8,8 +8,8 @@ import { Screen } from './store/ui/state'
 import Instructions from './components/Instructions'
 import LogIn from './components/LogIn'
 import bind from 'bind-decorator'
-import { firebaseConnect, WithFirebaseProps } from 'react-redux-firebase';
-import { compose } from 'redux';
+import { firebaseConnect, WithFirebaseProps } from 'react-redux-firebase'
+import { compose } from 'redux'
 
 function getLastNotGreaterThan(n: number, ns: number[]): number {
   if (n <= ns[0]) return ns[0]
@@ -146,7 +146,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatc
   }
 }
 
-export default compose(
+export default (compose(
   firebaseConnected,
   connect(mapStateToProps, mapDispatchToProps),
-)(App)
+)(App) as any)

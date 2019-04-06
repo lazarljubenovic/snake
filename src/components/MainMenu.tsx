@@ -38,7 +38,6 @@ export class MainMenu extends React.Component<Props> {
 
   public constructor(props: Props) {
     super(props)
-    console.log(props)
   }
 
   @bind private play() {
@@ -165,7 +164,7 @@ const mapDispatchToProps: MapDispatchToProps<DispatchProps, OwnProps> = (dispatc
   }
 }
 
-export default compose(
+export default (compose(
   withFirebase,
   connect(mapStateToProps, mapDispatchToProps),
-)(MainMenu)
+)(MainMenu) as any) 
