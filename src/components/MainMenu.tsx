@@ -7,16 +7,17 @@ import bind from 'bind-decorator'
 import { firebaseConnect } from 'react-redux-firebase'
 import { withFirebase, WithFirebaseProps } from 'react-redux-firebase'
 import { compose } from 'redux'
-import { timingSafeEqual } from 'crypto';
-// import { FirebaseProfile } from '../store/state';
+import Alert from './Alert';
 
-export interface StateProps {
+export const formatTwoDigits = (value: number) => value.toString().padStart(2, '0')
+
+interface StateProps {
   speed: number
   size: number
-  profile: any // FirebaseProfile
+  profile: RtdbProfile
 }
 
-export interface DispatchProps {
+interface DispatchProps {
   startGameFromMainMenu: (size: number) => void
   goToHighScoresScreen: () => void
   goToInstructionsScreen: () => void
@@ -26,15 +27,21 @@ export interface DispatchProps {
   changeSize: (size: number) => void
 }
 
-export interface OwnProps {
+interface OwnProps {
 
 }
 
-export type Props = StateProps & DispatchProps & OwnProps & WithFirebaseProps<any>
+type Props = StateProps & DispatchProps & OwnProps & WithFirebaseProps<any>
 
-export const formatTwoDigits = (value: number) => value.toString().padStart(2, '0')
+interface State {
+  isCannotViewHighScoresAlertOpen: boolean
+}
 
-export class MainMenu extends React.Component<Props> {
+export class MainMenu extends React.Component<Props, State> {
+
+  public state = {
+    isCannotViewHighScoresAlertOpen: false
+  }
 
   public constructor(props: Props) {
     super(props)
@@ -105,7 +112,7 @@ export class MainMenu extends React.Component<Props> {
         </div>
 
         <div className="area horizontal">
-          <button onClick={this.props.goToHighScoresScreen}>
+          <button onClick={this.scoresClick}>
             Scores
           </button>
           <button onClick={this.props.goToInstructionsScreen}>
@@ -125,8 +132,31 @@ export class MainMenu extends React.Component<Props> {
           </span>
         </div>
 
+        {
+          this.state.isCannotViewHighScoresAlertOpen &&
+          <Alert onAction={this.closeCannotViewHighScoresAlert}>
+            Guests cannot view scores. You must log in.
+          </Alert>
+        }
+
       </div >
     )
+  }
+
+  @bind private scoresClick() {
+    if (!this.props.profile.isLoaded || this.props.profile.isEmpty) {
+      this.openCannotViewHighScoresAlert()
+    } else {
+      this.props.goToHighScoresScreen()
+    }
+  }
+
+  @bind private openCannotViewHighScoresAlert() {
+    this.setState({ isCannotViewHighScoresAlertOpen: true })
+  }
+
+  @bind private closeCannotViewHighScoresAlert() {
+    this.setState({ isCannotViewHighScoresAlertOpen: false })
   }
 
 }
