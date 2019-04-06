@@ -4,15 +4,15 @@
 }
 
 :root {
-  --base: 24px;
+  --vh: 1vh;
 
-  --board-height: 21;
-  --board-width: 21;
-  --board-cell-size: calc(var(--base) * (5 / 3));
-  --board-cell-gap: calc(var(--base) / 6);
+  --board-height: 15;
+  --board-width: 15;
+  --board-cell-size: 36px; 
+  --board-cell-gap: calc(var(--board-cell-size) / 6);
 
-  --color-background: #{rgba(black, .86)};
-  --color-foreground: #c5c9c1;
+  --color-foreground: #{rgba(black, .86)};
+  --color-background: #c5c9c1;
   --color-board-empty: #7a7c75;
   --color-board-snake: #c1c6b6;
   --color-board-dot: #9fa09d;
@@ -29,76 +29,117 @@
 }
 
 html {
-  font-size: calc(var(--base) * 2 / 3);
+  font-family: PressStart2P, monospace;
+  font-size: 16px; // the font is 8px-aligned
   line-height: 1.5;
 }
 
 body {
   margin: 0;
   padding: 0;
-  font-family: PressStart2P, monospace;
   // -webkit-font-smoothing: antialiased;
   // -moz-osx-font-smoothing: grayscale;
-  background: var(--color-background);
-  touch-action: none;
+  background: var(--color-foreground);
+  width: 100vw;
+  height: calc(100 * var(--vh));
+  overscroll-behavior: contain;
+}
+
+#root {
+  width: 100%;
+  height: calc(100 * var(--vh));
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 a {
   text-decoration-style: dashed;
 }
 
-#root {
-  width: 100%;
-  height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+button:not(.basic) {
+  background: none;
+  outline: none;
+  border: .25rem solid var(--color-foreground);
+  padding: 0.75rem 1.25rem;
+  box-shadow: .25rem .25rem 0 0 var(--color-foreground);
+  cursor: var(--cursor-alt);
+
+  &:focus-visible, &:hover {
+    background-color: rgba(white, .5);
+  }
+
+  &:active {
+    background-color: rgba(white, .66);
+  }
+}
+
+button.basic {
+  background: none;
+  outline: none;
+  border: none;
+  padding: 0;
 }
 
 .counter {
   display: flex;
   > * + * {
-    margin-left: calc(var(--base) / 3);
+    margin-left: .75em;
   }
 }
 
+.screen {
+  height: 50rem;
+  width: 50rem;
+  max-height: calc(90 * var(--vh));
+  max-width: 90vw;
+  background-color: var(--color-background);
+  border: .5rem solid var(--color-foreground);
+  box-shadow: 0 0 0 .5rem var(--color-background);
+}
+
 .main-menu {
-  height: 80vh;
-  width: 80vw;
-  background-color: var(--color-foreground);
-  padding: calc(var(--base) * 2) calc(var(--base) * 6);
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
-  border: var(--board-cell-gap) solid var(--color-background);
-  box-shadow: 0 0 0 calc(var(--base) / 6) var(--color-foreground);
 
   > * + * {
-    margin-top: calc(var(--base) * 4 / 3);
+    margin-top: 2rem;
   }
 
   .area {
-    width: 100%;
+    max-width: 90%;
+    width: 32rem;
 
     &:not(.horizontal) {
       display: flex;
       flex-direction: column;
 
       > * + * {
-        margin-top: calc(var(--base) * 2 / 3);
+        margin-top: 1.25rem;
       }
     }
 
     &.horizontal {
       display: flex;
-
-      > * { 
-        width: 100%;
-      }
       
       > * + * {
         margin-left: 2rem;
+      }
+      
+      > * { 
+        width: 100%;
+      }
+
+      // on smaller screens
+      @media screen and (max-width: 36rem) {
+        flex-direction: column;
+
+        > * + * {
+          margin-left: 0;
+          margin-top: 2rem;
+        }
       }
     }
   }
@@ -114,7 +155,7 @@ a {
     }
 
     > * + * {
-      margin-top: calc(var(--base) / 2);
+      margin-top: 1rem;
     }
   }
 
@@ -134,14 +175,14 @@ a {
   flex-direction: column;
 
   > * + * {
-    margin-top: var(--base);
+    margin-top: 1.5rem;
   }
 }
 
 .score-bar {
   border: var(--board-cell-gap) solid var(--color-board-empty);
-  color: var(--color-foreground);
-  padding: var(--base);
+  color: var(--color-background);
+  padding: calc(var(--board-cell-size) / 3) calc(var(--board-cell-size) / 2);
   display: flex;
 
   margin: 0;
@@ -151,7 +192,7 @@ a {
   }
 
   > * + * {
-    margin-left: var(--base);
+    margin-left: 1.5rem;
   }
 }
 
@@ -183,7 +224,7 @@ a {
 
 .short-instructions {
   font-size: 0.5em;
-  color: var(--color-foreground);
+  color: var(--color-background);
   opacity: 0.66;
   text-align: center;
 }
@@ -193,7 +234,7 @@ a {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: calc(100 * var(--vh));
   background-color: rgba(black, .33);
   display: flex;
   justify-content: center;
@@ -203,14 +244,14 @@ a {
 .modal {
   display: flex;
   flex-direction: column;
-  color: var(--color-background);
-  background-color: var(--color-foreground);
-  padding: calc(var(--base) * 1.2);
-  border: calc(var(--base) / 8) solid var(--color-background);
-  box-shadow: calc(var(--base) / 2) calc(var(--base) / 2) 0 0 var(--color-background);
+  background-color: var(--color-background);
+  color: var(--color);
+  padding: 2.5rem;
+  border: .5rem solid var(--color-foreground);
+  box-shadow: .5rem .55rem 0 0 var(--color-foreground);
 
   > * + * {
-    margin-top: calc(var(--base) / 2);
+    margin-top: 1rem;
   }
 
   > :first-child {
@@ -223,17 +264,10 @@ a {
 }
 
 .high-scores {
-  // @todo: this should be common style for all pages
   display: flex;
-  height: 80vh;
-  width: 80vw;
-  color: var(--color-background);
-  background-color: var(--color-foreground);
-  border: var(--board-cell-gap) solid var(--color-background);
-  box-shadow: 0 0 0 calc(var(--base) / 6) var(--color-foreground);
 
   > * {
-    padding: calc(var(--base) * 1.2);
+    padding: 1em;
   }
 
   .nav {
@@ -241,39 +275,50 @@ a {
     flex-direction: column;
 
     > * + * {
-      margin-top: var(--base);
+      margin-top: 1.5rem;
     }
 
-    > button:last-child {
+    > :last-child {
       margin-top: auto;
+    }
+
+    .active {
+      background-color: rgba(white, .5);
     }
   }
 
   .title {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 3rem;
+    margin-bottom: 3em;
 
     .options {
       display: flex;
 
       > * + * {
-        margin-left: 3rem;
+        margin-left: 3em;
       }
 
       > * {
         display: flex;
 
         > * + * {
-          margin-left: 1rem;
+          margin-left: 1em;
         }
       }
     }
   }
 
   .main {
-    border-left: calc(var(--base) / 8) solid var(--color-background);
+    border-left: 0.25rem solid var(--color-foreground);
     width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .list {
+    overflow-y: auto;
   }
 
   table {
@@ -281,21 +326,52 @@ a {
     text-align: left;
     padding: 0;
     border-collapse: collapse;
+    line-height: 1;
 
     th {
-      padding-bottom: 1rem;
+      padding-bottom: 1em;
+      position: sticky;
+      top: 0;
+      background-color: var(--color-background);
+    }
+
+    td {
+      padding-bottom: .25em;
+    }
+
+    .right {
+      text-align: right;
+      padding-right: 2em;
+    }
+  }
+
+  @media screen and (max-width: 40rem) {
+    font-size: 0.75rem;
+    flex-direction: column;
+
+    .nav {
+      > * + * {
+        margin-left: 0;
+        margin-top: 1em!important;
+      }
+    }
+
+    .title {
+      margin-bottom: 1em;
+    }
+
+    .name {
+      display: none;
+    }
+
+    .main {
+      border-left: none;
     }
   }
 }
 
 .instructions {
   display: flex;
-  height: 80vh;
-  width: 80vw;
-  color: var(--color-background);
-  background-color: var(--color-foreground);
-  border: var(--board-cell-gap) solid var(--color-background);
-  box-shadow: 0 0 0 calc(var(--base) / 6) var(--color-foreground);
   padding: 2rem;
 
   flex-direction: column;
@@ -303,22 +379,31 @@ a {
   .panels {
     flex: 1;
     display: grid;
-    grid-template-rows: auto auto;
+    // grid-template-rows: auto auto;
     grid-template-columns: 1fr 1fr;
     align-items: center;
+    text-align: center;
+    grid-gap: .5em;
 
     h2 {
-      font-size: 1.5rem;
-      text-align: center;
+      font-size: 1.5em;
+      margin: 0;
+      margin-bottom: .5em;
     }
 
     p {
-      text-align: center;
+      margin: 0;
+    }
+
+    @media screen and (max-width: 50rem) {
+      grid-template-columns: 1fr;
+      font-size: 0.666em;
     }
   }
 
   .actions {
     width: 100%;
+    margin-top: 2rem;
 
     button {
       width: 100%;
@@ -328,12 +413,8 @@ a {
 
 .log-in {
   display: flex;
-  height: 80vh;
-  width: 80vw;
-  color: var(--color-background);
-  background-color: var(--color-foreground);
-  border: var(--board-cell-gap) solid var(--color-background);
-  box-shadow: 0 0 0 calc(var(--base) / 6) var(--color-foreground);
+  border: var(--board-cell-gap) solid var(--color-foreground);
+  box-shadow: 0 0 0 calc(var(--board-cell-size) / 6) var(--color-background);
   padding: 2rem;
   flex-direction: column;
   align-items: center;
@@ -356,24 +437,4 @@ a {
   button {
     width: 100%;
   }
-}
-
-button:not(.basic) {
-  background: none;
-  outline: none;
-  border: calc(var(--base) / 8) solid var(--color-background);
-  padding: calc(var(--base) / 2) calc(var(--base / 3));
-  box-shadow: calc(var(--base) / 4) calc(var(--base) / 4) 0 0 var(--color-background);
-  cursor: var(--cursor-alt);
-
-  &:focus, &:hover {
-    background-color: rgba(white, .5);
-  }
-}
-
-button.basic {
-  background: none;
-  outline: none;
-  border: none;
-  padding: 0;
 }

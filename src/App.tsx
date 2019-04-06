@@ -4,9 +4,18 @@ import MainMenu from './components/MainMenu'
 import HighScores from './components/HighScores'
 import { connect, MapStateToProps, MapDispatchToProps } from 'react-redux'
 import * as store from './store'
-import { Screen } from './store/ui/state';
-import Instructions from './components/Instructions';
-import LogIn from './components/LogIn';
+import { Screen } from './store/ui/state'
+import Instructions from './components/Instructions'
+import LogIn from './components/LogIn'
+import bind from 'bind-decorator'
+
+function getLastNotGreaterThan(n: number, ns: number[]): number {
+  if (n <= ns[0]) return ns[0]
+  for (let i = 1; i < ns.length; i++) {
+    if (n < ns[i]) return ns[i - 1]
+  }
+  return ns[ns.length - 1]
+}
 
 interface StateProps {
   isMainMenuScreen: boolean
@@ -14,6 +23,8 @@ interface StateProps {
   isHighScoresScreen: boolean
   isInstructionsScreen: boolean
   isLogInScreen: boolean
+  speed: number
+  size: number
 }
 
 interface DispatchProps {
@@ -27,7 +38,23 @@ interface OwnProps {
 type Props = StateProps & DispatchProps & OwnProps
 
 class App extends React.Component<Props> {
-  render() {
+
+  public componentWillMount() {
+    this.updateSizes()
+    window.addEventListener('resize', this.onResize)
+  }
+
+  public componentWillUnmount() {
+    window.removeEventListener('resize', this.onResize)
+  }
+
+  public componentWillReceiveProps(props: Props) {
+    if (props.size != this.props.size || props.speed != this.props.speed) {
+      this.updateSizes()
+    }
+  }
+
+  public render() {
     return (
       <div>
         {this.props.isMainMenuScreen && <MainMenu />}
@@ -38,6 +65,26 @@ class App extends React.Component<Props> {
       </div>
     )
   }
+
+  @bind private onResize() {
+    this.updateSizes()
+  }
+
+  private updateSizes() {
+    const w = window.innerWidth
+    const h = window.innerHeight
+
+    const sizes = [6, 12, 18, 24, 30, 36]
+    const cellSizeWidth = getLastNotGreaterThan(w / (7 * this.props.size / 6 + 1), sizes)
+    const cellSizeHeight = getLastNotGreaterThan(h / (7 * this.props.size / 6 + 3.5), sizes)
+    const cellSize = Math.min(cellSizeWidth, cellSizeHeight)
+    this.setProp('board-cell-size', cellSize + 'px')
+  }
+
+  private setProp(propName: string, value: any) {
+    document.documentElement!.style.setProperty(`--${propName}`, value)
+  }
+
 }
 
 const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (state, ownProps) => {
@@ -47,6 +94,8 @@ const mapStateToProps: MapStateToProps<StateProps, OwnProps, store.State> = (sta
     isHighScoresScreen: state.ui.currentScreen == Screen.HighScores,
     isInstructionsScreen: state.ui.currentScreen == Screen.Instructions,
     isLogInScreen: state.ui.currentScreen == Screen.LogIn,
+    speed: state.options.speed,
+    size: state.options.size,
   }
 }
 

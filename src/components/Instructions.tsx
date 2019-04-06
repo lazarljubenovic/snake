@@ -26,7 +26,7 @@ class Instructions extends React.Component<Props, State> {
   public render() {
 
     return (
-      <div className="instructions">
+      <div className="screen instructions">
         <div className="panels">
 
           <div className="panel">

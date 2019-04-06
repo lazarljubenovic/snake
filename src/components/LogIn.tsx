@@ -43,7 +43,7 @@ class LogIn extends React.Component<Props, State> {
   public render() {
 
     return (
-      <div className="log-in">
+      <div className="screen log-in">
 
         <div className="options">
           <button onClick={this.facebook}>Facebook</button>

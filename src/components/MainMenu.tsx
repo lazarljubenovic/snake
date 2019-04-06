@@ -42,6 +42,8 @@ export class MainMenu extends React.Component<Props> {
   }
 
   @bind private play() {
+    const isMobile = (window as any).__IS_MOBILE__
+    if (isMobile) document.body.requestFullscreen()
     this.props.startGameFromMainMenu(this.props.size)
   }
 
@@ -87,7 +89,7 @@ export class MainMenu extends React.Component<Props> {
       : ''
 
     return (
-      <div className="main-menu">
+      <div className="screen main-menu">
 
         <div className="area">
           <button onClick={this.play}>Play</button>
@@ -104,8 +106,12 @@ export class MainMenu extends React.Component<Props> {
         </div>
 
         <div className="area horizontal">
-          <button onClick={this.props.goToHighScoresScreen}>High scores</button>
-          <button onClick={this.props.goToInstructionsScreen}>Instructions</button>
+          <button onClick={this.props.goToHighScoresScreen}>
+            Scores
+          </button>
+          <button onClick={this.props.goToInstructionsScreen}>
+            Rules
+          </button>
         </div>
 
         <div className="area">

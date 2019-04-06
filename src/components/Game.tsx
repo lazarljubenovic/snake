@@ -89,7 +89,7 @@ class Game extends React.Component<Props> {
         <div className="game">
           <ScoreBar score={this.score} />
           <div className="board">{cells}</div>
-          <ShortInstructions />
+          {/* <ShortInstructions /> */}
         </div>
         {this.props.isGameOver && <GameOverModal again={this.restart} back={this.props.toMainMenu} score={this.score} />}
       </>
@@ -189,12 +189,14 @@ class Game extends React.Component<Props> {
     document.addEventListener('touchstart', this.handleTouchStart, false)
     document.addEventListener('touchmove', this.handleTouchMove, false)
     document.addEventListener('touchend', this.handleTouchEnd, false)
+    document.body.style.touchAction = 'none'
   }
 
   private stripDownSwipeDetection () {
     document.removeEventListener('touchstart', this.handleTouchStart)
     document.removeEventListener('touchmove', this.handleTouchMove)
     document.removeEventListener('touchend', this.handleTouchEnd)
+    document.body.style.touchAction = ''
   }
 
   private swipeXPrev: number = 0

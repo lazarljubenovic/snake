@@ -87,11 +87,16 @@ class HighScores extends React.Component<Props, State> {
       format: formatTwoDigits,
     }
 
+    const tabAllClassNames: string[] = []
+    const tabModeClassNames: string[] = []
+    if (this.state.currentTab == Tab.All) tabAllClassNames.push('active')
+    if (this.state.currentTab == Tab.Mode) tabModeClassNames.push('active')
+
     return (
-      <div className="high-scores">
+      <div className="screen high-scores">
         <div className="nav">
-          <button onClick={this.changeTabToAll}>All</button>
-          <button onClick={this.changeTabToMode}>Mode</button>
+          <button onClick={this.changeTabToAll} className={tabAllClassNames.join(' ')}>All</button>
+          <button onClick={this.changeTabToMode} className={tabModeClassNames.join(' ')}>Mode</button>
           <button onClick={this.props.toMainMenu}>Back</button>
         </div>
 
@@ -125,8 +130,8 @@ class HighScores extends React.Component<Props, State> {
                       <thead>
                         <tr>
                           <th>Name</th>
-                          <th>Score</th>
-                          <th>Type</th>
+                          <th className="right">Scr</th>
+                          <th>Mode</th>
                         </tr>
                       </thead>
                       <tbody>
@@ -135,7 +140,7 @@ class HighScores extends React.Component<Props, State> {
                             return (
                               <tr key={value.user + value.size + value.speed + value.score + index}>
                                 <td>{value.userDisplayName}</td>
-                                <td>{value.score}</td>
+                                <td className="right">{value.score}</td>
                                 <td>{value.size}/{value.speed}</td>
                               </tr>
                             )
@@ -151,7 +156,7 @@ class HighScores extends React.Component<Props, State> {
                       )
                       : (
                         <span>
-                          No scores for
+                          No scores for{' '}
                           {formatTwoDigits(this.state.speed)}/{formatTwoDigits(this.state.size)}.
                         </span>
                       )
